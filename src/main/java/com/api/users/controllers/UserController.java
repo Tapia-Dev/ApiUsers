@@ -59,6 +59,42 @@ public class UserController {
         }
     }
 
+    @PutMapping("/modificar/{id}")
 
+    public ResponseEntity<?>update(@RequestBody User user, @PathVariable Long id) throws Exception {
+        try {
+            Optional<User> u = userService.findById(id);
+            if (u.isPresent()){
+                User userdb = u.orElseThrow();
+                userdb.setUserName(user.getUserName());
+                userdb.setEmail(user.getEmail());
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(userService.save(userdb));
+            }
+        }catch (Exception e ){
+            String messageError = "No se pudo realizar la operacion" + e.getMessage();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(messageError);
+
+        }
+        return (ResponseEntity<?>) ResponseEntity.notFound();
+    }
+
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        try {
+            Optional<User> o = userService.findById(id);
+            if(o.isPresent()){
+                userService.remove(id);
+                return ResponseEntity.noContent().build();
+            }
+            return ResponseEntity.notFound().build();
+
+        }catch (Exception e){
+            String messageError = "No se pudo realizar la operacion" + e.getMessage();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(messageError);
+        }
+    }
 
 }
