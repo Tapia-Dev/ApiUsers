@@ -3,10 +3,13 @@ package com.api.users.controllers;
 import com.api.users.model.User;
 import com.api.users.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework. @Autowired
+private UserService userService;http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.Binding;
+import javax.validation.Valid;
 import java.util.Optional;
 
 
@@ -14,8 +17,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+
 
     @GetMapping("/users")
     public ResponseEntity<?> findAll() {
@@ -48,7 +50,7 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?>save(@RequestBody User user){
+    public ResponseEntity<?>save(@Valid  @RequestBody User user){
         try{
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(userService.save(user));
